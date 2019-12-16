@@ -29,7 +29,7 @@ object TerminateHelper {
 
     private const val SUCCESS_EXIT_CODE = 0
     private const val EXCEPTION_EXIT_CODE = 1
-    private const val sleepSecondsBeforeExit = 5L // TODO 超过是否会强制退出
+    private const val sleepSecondsBeforeExit = 5L
     private val terms = ConcurrentLinkedDeque<() -> Unit>()
     private val isRegistered = AtomicBoolean(false)
     private val isStopping = AtomicBoolean(false)
@@ -75,6 +75,7 @@ object TerminateHelper {
             }
         }
         if (isNeedSleepBeforeExit.get()) {
+            logger.info("sleep $sleepSecondsBeforeExit seconds before exit.")
             sleepUninterruptibly(sleepSecondsBeforeExit, TimeUnit.SECONDS)
         }
         stoppedLatch.countDown()
